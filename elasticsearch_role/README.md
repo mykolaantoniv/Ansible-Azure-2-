@@ -1,24 +1,18 @@
-# Ansible Role: jdk_role #
+# Ansible Role: elasticsearch_role #
 *****
-This Ansible role Install/Uninstall/Upgrade/Downgrade Java Development Kit.
+This Ansible role Install/Uninstall/Upgrade/Downgrade Elasticsearch.
 
 ## Role Variables ##
 *****
 Available variables are listed below:
 ```
-jdk_license_accept: - If set to True will accept Java Development Kit license agreement;
 
 package:
-  version_force - If set to True will replace installed version of Java Development Kit to defined;
-  version       - Java Development Kit package version;
-  update        - Java Development Kit package update version;
-  build         - Java Development Kit package build version;
-  arch          - Java Development Kit package architecture;
-  log           - If set to True will save Java Development Kit package installation log into "ProgramData" folder;
-  arguments     - Java Development Kit package installation arguments. All arguments must be separated by dots.
-                  Dont leave quotes of this option empty, if it is unnecessary type "NONE" inside;
+  version_force - If set to True will replace installed version of Elasticsearch to defined;
+  version       - Elasticsearch package version;
+  arch          - Elasticsearch package architecture;
 
-jdk_uninstall   - If set to True will uninstall Java Development Kit if it installed;
+es_uninstall   - If set to True will uninstall Elasticsearch if it installed;
 ```
 **WARNING!**
 
@@ -29,17 +23,12 @@ Do not remove default variables from "defaults".
 ```
 - hosts: "localhost"
   roles:
-    - role: "jdk_role"
-      jdk_license_accept: "True"
+    - role: "elastic_role"
       package:
         version_force: "False"
-        version:   "8"
-        update:    "102"
-        build:     "14"
-        arch:      "x64"
-        log:       "True"
-        arguments: "ADDLOCAL='ToolsFeature,SourceFeature,PublicjreFeature'"
-      jdk_uninstall: "False"
+        version: "5.0.0"
+        arch: "x64"
+      es_uninstall: "False"
 ```
 
 ## Suported OS ##
