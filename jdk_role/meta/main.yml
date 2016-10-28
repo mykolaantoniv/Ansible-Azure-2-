@@ -1,0 +1,20 @@
+# meta "main"
+
+---
+
+  galaxy_info:
+    author: "SS Employer"
+    description: "Install/Uninstall/Upgrade/Downgrade Java Development Kit (JDK)"
+    company: "SoftServeInc"
+    license: "Apache License 2.0"
+    min_ansible_version: "2.1.1.0"
+    platforms:
+    - name: "Windows Server"
+      versions:
+      - "2012"
+      - "2016"
+    galaxy_tags:
+    - "oracle"
+    - "java"
+    - "jdk"
+    - "java development kit"

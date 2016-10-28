@@ -1,0 +1,8 @@
+# tasks "uninstall"
+
+---
+
+  - name: "Uninstall Java Development Kit"
+    script: "scripts/tasks/uninstall.ps1"
+    register: "app_uins_stat"
+    failed_when: (app_uins_stat['stdout'] != '0')

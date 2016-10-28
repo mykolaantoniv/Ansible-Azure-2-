@@ -1,0 +1,14 @@
+# tests "install"
+
+---
+
+  - name: "Test if Java Development Kit installed"
+    script: "scripts/tests/install.uninstall.ps1"
+    register: "app_ins_stat_test"
+    failed_when: (app_ins_stat_test['stdout'] != 'True')
+
+  - name: "Test Java Development Kit package removed"
+    win_stat:
+      path: "{{app_pkg_dest}}"
+    register: "app_pkg_rem_test"
+    failed_when: (app_pkg_rem_test['stat']['exists'] == True)
