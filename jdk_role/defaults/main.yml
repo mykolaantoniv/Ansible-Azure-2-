@@ -12,6 +12,8 @@
     arch:              "x64"
     log:               "True"
     arguments:         "ADDLOCAL='ToolsFeature,SourceFeature,PublicjreFeature'"
-    install_directory: "C:\\Program Files\\Java\\jdk"
+    home_variable:     "True"
+    install_directory: "C:\\Program Files\\Java\\JDK"
+
 
   jdk_uninstall: "False"

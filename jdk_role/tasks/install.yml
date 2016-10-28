@@ -30,9 +30,9 @@
 
   - name: "Set Java Development Kit package installation arguments"
     set_fact:
-      app_pkg_args: "/s{{(package['log'] == 'True')|ternary(', /L, ' + app_pkg_log|default(''), '')}}
-      {{(package['install_directory'] != 'NONE')|ternary(', /INSTALLDIR=' + package['install_directory'], '')}}
-      {{(package['arguments'] != 'NONE')|ternary(', ' + package['arguments'], '')}}"
+      app_pkg_args: "/s{{(package['log'] == 'True')|ternary(', /L, ' + app_pkg_log|default(''), '')}}{{
+      (package['install_directory'] != 'NONE')|ternary(', INSTALLDIR=' + package['install_directory'], '')}}{{
+      (package['arguments'] != 'NONE')|ternary(', ' + package['arguments'], '')}}"
 
   - name: "Download Java Development Kit package"
     script: "scripts/tasks/install_first.ps1 -URL {{app_pkg_url}} -Path {{app_pkg_dest}}"
@@ -43,6 +43,13 @@
     script: "scripts/tasks/install_second.ps1 -Path {{app_pkg_dest}} -Parameters {{app_pkg_args}}"
     register: "pkg_ins_stat"
     failed_when: (pkg_ins_stat['stdout'] != '0')
+
+  - name: "Set Java Development Kit home path environmen variable"
+    script: "scripts/tasks/install_third.ps1 -Path {{package['install_directory']}}"
+    register "pkg_java_home"
+    failed_when: (pkg_java_home['stdout'] != '')
+    when: (package['install_directory'] != 'NONE') and
+          (package['home_variable'] == 'True')
 
   - name: "Remove Java Development Kit installation package"
     win_file:
