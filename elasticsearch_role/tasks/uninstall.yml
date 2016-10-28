@@ -2,7 +2,23 @@
 
 ---
 
-  - name: "Uninstall Java Development Kit"
-    script: "scripts/tasks/uninstall.ps1"
+  - name: "Get Elasticsearch home path"
+    script: "scripts/tasks/uninstall_first.ps1"
+    register: "app_home_path"
+    failed_when: (app_home_path['stdout'] == '')
+
+  - name: "Stop Elasticsearch service"
+    win_service:
+      name: "elasticsearch-service-x64"
+      name: "elasticsearch-service-x86"
+      state: "stopped"
+
+  - name: "Remove Elasticsearch service"
+    script: "scripts/tasks/uninstall_second.ps1"
     register: "app_uins_stat"
     failed_when: (app_uins_stat['stdout'] != '0')
+
+  - name: "Remove Elasticsearch sources"
+    win_file:
+      path: "{{app_home_path['stdout']}}"
+      state: "absent"
