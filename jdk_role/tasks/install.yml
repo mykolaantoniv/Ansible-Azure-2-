@@ -46,7 +46,7 @@
 
   - name: "Set Java Development Kit home path environmen variable"
     script: "scripts/tasks/install_third.ps1 -Path {{package['install_directory']}}"
-    register "pkg_java_home"
+    register: "pkg_java_home"
     failed_when: (pkg_java_home['stdout'] != '')
     when: (package['install_directory'] != 'NONE') and
           (package['home_variable'] == 'True')
