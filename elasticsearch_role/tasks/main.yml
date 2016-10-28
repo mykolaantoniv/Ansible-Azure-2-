@@ -10,7 +10,7 @@
     set_fact:
       app_ins_stat_msg: "{{(app_ins_stat['stdout'] == 'True')|ternary('Installed', 'Not Installed')}}"
 
-  - name: "Print Java Development Kit install state message"
+  - name: "Print Elasticsearch install state message"
     debug:
       msg: "Elasticsearch state: {{app_ins_stat_msg}}"
 
