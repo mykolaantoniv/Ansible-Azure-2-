@@ -2,75 +2,64 @@
 
 ---
 
-  - name: "Check if Java Development Kit installed"
+  - name: "Check if Elasticsearch installed"
     script: "scripts/tasks/main_first.ps1"
     register: "app_ins_stat"
 
-  - name: "Set Java Development Kit install state message"
+  - name: "Set Elasticsearch install state message"
     set_fact:
       app_ins_stat_msg: "{{(app_ins_stat['stdout'] == 'True')|ternary('Installed', 'Not Installed')}}"
 
   - name: "Print Java Development Kit install state message"
     debug:
-      msg: "Java Development Kit state: {{app_ins_stat_msg}}"
+      msg: "Elasticsearch state: {{app_ins_stat_msg}}"
 
-  - name: "Get version of installed Java Development Kit"
-    script: "scripts/tasks/main_second.ps1 -Type Version"
+  - name: "Get version of installed Elasticsearch"
+    script: "scripts/tasks/main_second.ps1"
     register: "app_ins_ver"
     when: (app_ins_stat['stdout'] == 'True')
 
-  - name: "Get update version of installed Java Development Kit"
-    script: "scripts/tasks/main_second.ps1 -Type Update"
-    register: "app_ins_upd"
-    when: (app_ins_stat['stdout'] == 'True')
-
-  - name: "Set Java Development Kit update version message"
-    set_fact:
-      app_ins_upd_msg: "{{(app_ins_upd['stdout'] != '')|ternary(app_ins_upd['stdout'], '---')}}"
-    when: (app_ins_stat['stdout'] == 'True')
-
-  - name: "Print Java Development Kit version/update message"
+  - name: "Print Elasticsearch version message"
     debug:
-      msg: "Java Development Kit version: {{app_ins_ver['stdout']}} - update: {{app_ins_upd_msg}}"
+      msg: "Elasticsearch version: {{app_ins_ver['stdout']}}"
     when: (app_ins_stat['stdout'] == 'True')
 
-  - name: "Check if Java Development Kit need to uninstall"
+  - name: "Check if Elasticsearch need to uninstall"
     set_fact:
-      app_uninstall: "{{((package['version_force'] == 'True') and ((package['version'] + package['update']) !=
-                      (app_ins_ver + app_ins_upd)))|ternary ('True', 'False')}}"
+      app_uninstall: "{{((package['version_force'] == 'True') and (package['version'] != app_ins_ver))|
+                      ternary ('True', 'False')}}"
     when: (app_ins_stat['stdout'] == 'True')
 
-  - name: "Set Java Development Kit role install task action"
+  - name: "Set Elasticsearch role install task action"
     set_fact:
-      app_install: "{{(((jdk_uninstall == 'False') and (jdk_license_accept == 'True')) and ((app_ins_stat['stdout'] !=
-                    'True') or ((app_ins_stat['stdout'] == 'True') and (app_uninstall|default('False') == True))))|
-                    ternary('True', 'False')}}"
+      app_install: "{{((es_uninstall == 'False') and ((app_ins_stat['stdout'] != 'True') or ((app_ins_stat['stdout'] ==
+                    'True') and (app_uninstall|default('False') == True))))|ternary('True', 'False')}}"
 
   - include: "uninstall.yml"
-    when: (jdk_uninstall == 'True') or
+    when: (es_uninstall == 'True') or
           (app_uninstall|default('False') == True)
 
   - include: "install.yml"
     when: (app_install == True)
 
   - include: "tests/uninstall.yml"
-    when: (jdk_uninstall == 'True')
+    when: (es_uninstall == 'True')
 
   - include: "tests/install.yml"
     when: (app_install == True)
 
-  - name: "Print Java Development Kit uninstall message"
+  - name: "Print Elasticsearch uninstall message"
     debug:
-      msg: "Java Development Kit was uninstalled or not initially installed"
-    when: (jdk_uninstall == 'True')
+      msg: "Elasticsearch was uninstalled or not initially installed"
+    when: (es_uninstall == 'True')
 
-  - name: "Print Java Development Kit install message"
+  - name: "Print Elasticsearch install message"
     debug:
-      msg: "Java Development Kit was seccesfully installed"
+      msg: "Elasticsearch was seccesfully installed"
     when: (app_install == True)
 
-  - name: "Print Java Development Kit empty message"
+  - name: "Print Elasticsearch empty message"
     debug:
       msg: "Nothing to do"
-    when: (jdk_uninstall == 'False') and
+    when: (es_uninstall == 'False') and
           (app_install == False)
