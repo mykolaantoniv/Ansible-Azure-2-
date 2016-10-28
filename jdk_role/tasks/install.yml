@@ -30,8 +30,9 @@
 
   - name: "Set Java Development Kit package installation arguments"
     set_fact:
-      app_pkg_args: "/s{{(package['log'] == 'True')|ternary(', /L, ' + app_pkg_log|default(''), '')}}{{
-                    (package['arguments'] != 'NONE')|ternary(', ' + package['arguments'], '')}}"
+      app_pkg_args: "/s{{(package['log'] == 'True')|ternary(', /L, ' + app_pkg_log|default(''), '')}}
+      {{(package['install_directory'] != 'NONE')|ternary(', /INSTALLDIR=' + package['install_directory'], '')}}
+      {{(package['arguments'] != 'NONE')|ternary(', ' + package['arguments'], '')}}"
 
   - name: "Download Java Development Kit package"
     script: "scripts/tasks/install_first.ps1 -URL {{app_pkg_url}} -Path {{app_pkg_dest}}"
