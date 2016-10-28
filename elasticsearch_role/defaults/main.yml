@@ -2,15 +2,9 @@
 
 ---
 
-  jdk_license_accept: "True"
-
   package:
     version_force: "False"
-    version:       "8"
-    update:        "102"
-    build:         "14"
+    version:       "5.0.0"
     arch:          "x64"
-    log:           "True"
-    arguments:     "ADDLOCAL='ToolsFeature,SourceFeature,PublicjreFeature'"
 
-  jdk_uninstall: "False"
+  es_uninstall: "False"
