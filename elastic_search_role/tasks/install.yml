@@ -1,0 +1,49 @@
+# tasks "install"
+
+---
+
+  - name: "Set Java Development Kit package hard url"
+    set_fact:
+      app_pkg_hard_url: "http://download.oracle.com/otn-pub/java/jdk/"
+
+  - name: "Set Java Development Kit package update version url part"
+    set_fact:
+      app_pkg_upd_url: "{{(package['update'] != '')|ternary('u' + package['update'], '')}}"
+
+  - name: "Set Java Development Kit package build version url part"
+    set_fact:
+      app_pkg_bld_url: "{{(package['build'] != '')|ternary('-b' + package['build'], '')}}"
+
+  - name: "Set Java Development Kit package full url"
+    set_fact:
+      app_pkg_url: "{{app_pkg_hard_url}}{{package['version']}}{{app_pkg_upd_url}}{{app_pkg_bld_url}}/jdk-{{
+                    package['version']}}{{app_pkg_upd_url}}-windows-{{package['arch']}}.exe"
+
+  - name: "Set Java Development Kit package download path"
+    set_fact:
+      app_pkg_dest: "{{ansible_env['TEMP']}}\\JDK_WINDOWS_INSTALLER_PACKAGE_TEMP.exe"
+
+  - name: "Set Java Development Kit package installation log path"
+    set_fact:
+      app_pkg_log: "{{ansible_env.ProgramData}}\\JDK_WINDOWS_INSTALLER_PACKAGE.log"
+    when: (package['log'] == 'True')
+
+  - name: "Set Java Development Kit package installation arguments"
+    set_fact:
+      app_pkg_args: "/s{{(package['log'] == 'True')|ternary(', /L, ' + app_pkg_log|default(''), '')}}{{
+                    (package['arguments'] != 'NONE')|ternary(', ' + package['arguments'], '')}}"
+
+  - name: "Download Java Development Kit package"
+    script: "scripts/tasks/install_first.ps1 -URL {{app_pkg_url}} -Path {{app_pkg_dest}}"
+    register: "pkg_dwn_stat"
+    failed_when: (pkg_dwn_stat['stdout'] != '')
+
+  - name: "Install Java Development Kit package"
+    script: "scripts/tasks/install_second.ps1 -Path {{app_pkg_dest}} -Parameters {{app_pkg_args}}"
+    register: "pkg_ins_stat"
+    failed_when: (pkg_ins_stat['stdout'] != '0')
+
+  - name: "Remove Java Development Kit installation package"
+    win_file:
+      path: "{{app_pkg_dest}}"
+      state: "absent"

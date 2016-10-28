@@ -1,0 +1,8 @@
+# tests "uninstall"
+
+---
+
+  - name: "Test if Java Development Kit uninstalled"
+    script: "scripts/tests/install.uninstall.ps1"
+    register: "app_uins_stat_test"
+    failed_when: (app_uins_stat_test['stdout'] == 'True')
