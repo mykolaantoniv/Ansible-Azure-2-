@@ -2,15 +2,15 @@
 
 ---
 
-wm_admin_username: ""
-wm_image:
+vm_admin_username: ""
+vm_image:
   offer: ""
   publisher: ""
   sku: ""
   version: ""
-wm_location: ""
-wm_name: ""
-wm_resource_group: ""
-wm_ssh_pub_key: ""
-wm_storage_account_name: ""
-wm_param_size: ""
+vm_location: ""
+vm_name: ""
+vm_resource_group: ""
+vm_ssh_pub_key: ""
+vm_storage_account_name: ""
+vm_param_size: ""
