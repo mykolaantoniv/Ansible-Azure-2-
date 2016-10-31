@@ -4,20 +4,20 @@
 
   - name: "Create Azure Virtual Machine"
     azure_rm_virtualmachine:
-      admin_username: "{{wm_admin_username}}"
+      admin_username: "{{vm_admin_username}}"
       image:
-        offer: "{{wm_image['offer']}}"
-        publisher: "{{wm_image['publisher']}}"
-        sku: "{{wm_image['sku']}}"
-        version: "{{wm_image['version']}}"
-      location: "{{wm_location}}"
-      name: "{{wm_name}}"
-      resource_group: "{{wm_resource_group}}"
+        offer: "{{vm_image['offer']}}"
+        publisher: "{{vm_image['publisher']}}"
+        sku: "{{vm_image['sku']}}"
+        version: "{{vm_image['version']}}"
+      location: "{{vm_location}}"
+      name: "{{vm_name}}"
+      resource_group: "{{vm_resource_group}}"
       ssh_password_enabled: 'False'
       ssh_public_keys:
-        - path: "/home/{{wm_admin_username}}/.ssh/authorized_keys"
-          key_data: "{{wm_ssh_pub_key}}"
+        - path: "/home/{{vm_admin_username}}/.ssh/authorized_keys"
+          key_data: "{{vm_ssh_pub_key}}"
       started: 'True'
       state: 'present'
-      storage_account_name: "{{wm_storage_account_name}}"
-      vm_size: "{{wm_param_size}}"
+      storage_account_name: "{{vm_storage_account_name}}"
+      vm_size: "{{vm_param_size}}"
