@@ -1,0 +1,16 @@
+# defaults "main"
+
+---
+
+wm_admin_username: ""
+wm_image:
+  offer: ""
+  publisher: ""
+  sku: ""
+  version: ""
+wm_location: ""
+wm_name: ""
+wm_resource_group: ""
+wm_ssh_pub_key: ""
+wm_storage_account_name: ""
+wm_param_size: ""
